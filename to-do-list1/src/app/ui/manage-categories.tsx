@@ -17,12 +17,12 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
   const [localCategories, setLocalCategories] =
     useState<Category[]>(categories);
   const [categoryName, setCategoryName] = useState("");
-  const [categoryColor, setCategoryColor] = useState("#3b82f6");
+  const [categoryColor, setCategoryColor] = useState("#10b981"); // default green
   const [warning, setWarning] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Load categories for the current user
+  // Load categories for current user
   useEffect(() => {
     const loadCategories = async () => {
       if (!currentUser) return;
@@ -67,7 +67,7 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
 
       setLocalCategories((prev) => [...prev, newCategory]);
       setCategoryName("");
-      setCategoryColor("#3b82f6");
+      setCategoryColor("#10b981");
     } catch (err) {
       console.error("Failed to add category:", err);
       setError("Failed to add category");
@@ -93,7 +93,6 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
       setWarning("");
 
       const updatedCategory = await updateCategory(id, { name: trimmedName });
-
       setLocalCategories((prev) =>
         prev.map((cat) => (cat._id === id ? updatedCategory : cat))
       );
@@ -112,7 +111,6 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
       setError("");
 
       const updatedCategory = await updateCategory(id, { color });
-
       setLocalCategories((prev) =>
         prev.map((cat) => (cat._id === id ? updatedCategory : cat))
       );
@@ -144,7 +142,6 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
       setWarning("");
 
       await deleteCategory(id);
-
       setLocalCategories((prev) => prev.filter((cat) => cat._id !== id));
     } catch (err) {
       console.error("Failed to delete category:", err);
@@ -162,8 +159,8 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
   if (isLoading && localCategories.length === 0) {
     return (
       <div className="p-6 h-full flex flex-col bg-white items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-        <p className="mt-4 text-gray-600">Loading categories...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+        <p className="mt-4 text-green-700">Loading categories...</p>
       </div>
     );
   }
@@ -171,17 +168,17 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
   return (
     <div className="p-6 h-full flex flex-col bg-white">
       {isLoading && (
-        <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-2 bg-blue-100 text-blue-800 rounded-b-lg shadow">
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
+        <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center p-2 bg-green-100 text-green-800 rounded-b-lg shadow">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-500 mr-2"></div>
           <p className="font-medium">Processing...</p>
         </div>
       )}
 
       <div className="flex justify-between items-center mb-2">
-        <h1 className="text-2xl font-bold text-gray-800">Manage Categories</h1>
+        <h1 className="text-2xl font-bold text-green-900">Manage Categories</h1>
         <button
           onClick={onBack}
-          className="text-gray-500 hover:text-gray-800"
+          className="text-green-500 hover:text-green-700"
           disabled={isLoading}
         >
           <span className="material-icons text-2xl">close</span>
@@ -209,7 +206,7 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
               onBlur={(e) => updateCategoryName(e.target.value, category._id)}
               onChange={(e) => updateCategoryName(e.target.value, category._id)}
               disabled={isLoading}
-              className="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+              className="flex-grow p-2 border border-green-300 rounded-md focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
             />
             <input
               type="color"
@@ -239,7 +236,7 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
           onChange={(e) => setCategoryName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addNewCategory()}
           disabled={isLoading}
-          className="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+          className="flex-grow p-2 border border-green-300 rounded-md focus:ring-2 focus:ring-green-500 disabled:bg-gray-100"
         />
         <input
           type="color"
@@ -261,7 +258,7 @@ export default function ManageCategories({ onBack }: { onBack: () => void }) {
         <button
           onClick={saveCategories}
           disabled={isLoading}
-          className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 transition-colors disabled:bg-gray-400"
+          className="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 transition-colors disabled:bg-gray-400"
         >
           Save
         </button>

@@ -92,11 +92,10 @@ export default function Overdue() {
     return grouped;
   }, [userOverdueTasks]);
 
-  const formatDate = (date: Date) =>
-    date.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
+  const formatTime = (date: Date) =>
+    new Date(date).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
 
   const isToday = (date: Date) =>
@@ -132,26 +131,22 @@ export default function Overdue() {
     refreshTasks();
   };
 
-  const formatTime = (date: Date) =>
-    new Date(date).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Overdue Tasks</h1>
+        <h1 className="text-3xl font-bold text-green-800 mb-4">
+          Overdue Tasks
+        </h1>
 
         {/* Category Filter */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-green-700 mb-2">
             Filter by Category
           </label>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full md:w-64 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            className="w-full md:w-64 p-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
           >
             <option value="All">All Categories</option>
             {categories.map((category: Category) => (
@@ -168,8 +163,8 @@ export default function Overdue() {
             onClick={() => setShowAllOverdue(!showAllOverdue)}
             className="px-4 py-2 rounded-lg font-semibold transition-colors duration-200"
             style={{
-              backgroundColor: showAllOverdue ? "#DC2626" : "#FEE2E2",
-              color: showAllOverdue ? "white" : "#B91C1C",
+              backgroundColor: showAllOverdue ? "#16A34A" : "#DCFCE7",
+              color: showAllOverdue ? "white" : "#166534",
             }}
           >
             {showAllOverdue ? "View by Date" : "View All Overdue"}
@@ -185,9 +180,9 @@ export default function Overdue() {
                 onClick={() => handleDateSelect(date)}
                 className={`p-3 rounded-lg text-center transition-all duration-200 ${
                   isSelected(date)
-                    ? "bg-red-500 text-white shadow-md"
+                    ? "bg-green-500 text-white shadow-md"
                     : isToday(date)
-                    ? "bg-red-100 text-red-700 border-2 border-red-300"
+                    ? "bg-green-100 text-green-700 border-2 border-green-300"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >

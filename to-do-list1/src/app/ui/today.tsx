@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import ManageTask from "./manage-task";
 import { useTasks } from "../task-provider";
 import { useUser } from "../user-provider";
@@ -13,17 +13,13 @@ export default function Today() {
 
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [todayTasks, setTodayTasks] = useState<Task[]>([]);
-
-  // Task management modal
   const [isManageTaskOpen, setManageTaskOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [initialDate, setInitialDate] = useState<Date>(new Date());
-
   const [loadingStates, setLoadingStates] = useState<{
     [key: string]: boolean;
   }>({});
 
-  // Fetch tasks from API
   const refreshTasks = async () => {
     try {
       const updatedTasks = await fetchTasks();
@@ -33,7 +29,6 @@ export default function Today() {
     }
   };
 
-  // Filter today's tasks for current user, mark overdue dynamically
   const getTodayTasks = (tasksList: Task[]): Task[] => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -56,7 +51,6 @@ export default function Today() {
       .filter(Boolean) as Task[];
   };
 
-  // Update todayTasks whenever tasks or category changes
   useEffect(() => {
     if (!currentUser) return;
     setTodayTasks(getTodayTasks(tasks));
@@ -68,7 +62,6 @@ export default function Today() {
     return () => clearInterval(interval);
   }, [tasks, currentUser]);
 
-  // Handlers
   const handleAddTask = () => {
     setSelectedTaskId(null);
     setInitialDate(new Date());
@@ -115,7 +108,6 @@ export default function Today() {
 
   const isAnyTaskLoading = Object.values(loadingStates).some(Boolean);
 
-  // Helpers
   const formatTime = (date: Date) =>
     new Date(date).toLocaleTimeString([], {
       hour: "2-digit",
@@ -125,22 +117,22 @@ export default function Today() {
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Today Tasks</h1>
+        <h1 className="text-3xl font-bold text-green-800 mb-4">Today Tasks</h1>
 
         {/* Quick Stats */}
-        <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-green-100 rounded-lg">
+          <h3 className="text-lg font-semibold text-green-800 mb-4">
             Today Summary
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-2xl font-bold text-blue-600">
+              <div className="text-2xl font-bold text-green-600">
                 {filteredTasks.length}
               </div>
               <div className="text-sm text-gray-600">Total Tasks</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-green-500">
                 {filteredTasks.filter((t) => t.status === "completed").length}
               </div>
               <div className="text-sm text-gray-600">Completed</div>
@@ -162,13 +154,13 @@ export default function Today() {
 
         {/* Category Filter */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-green-700 mb-2">
             Filter by Category
           </label>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full md:w-64 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full md:w-64 p-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
             disabled={isAnyTaskLoading}
           >
             <option value="All">All Categories</option>
@@ -182,7 +174,7 @@ export default function Today() {
 
         {/* Add Task */}
         <button
-          className="w-full bg-blue-500 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 mb-6 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed"
+          className="w-full bg-green-500 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 mb-6 transition-colors disabled:bg-green-300 disabled:cursor-not-allowed"
           onClick={handleAddTask}
           disabled={isAnyTaskLoading}
         >
@@ -203,12 +195,12 @@ export default function Today() {
                   className={`relative bg-white p-4 rounded-lg shadow-sm border-l-4 hover:shadow-md transition-shadow duration-200 cursor-pointer ${
                     task.status === "completed" ? "opacity-60" : ""
                   } ${isTaskLoading ? "opacity-50 pointer-events-none" : ""}`}
-                  style={{ borderLeftColor: category?.color || "#3B82F6" }}
+                  style={{ borderLeftColor: category?.color || "#22C55E" }}
                   onClick={() => !isTaskLoading && handleEditTask(task._id)}
                 >
                   {isTaskLoading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
                     </div>
                   )}
 
@@ -276,12 +268,12 @@ export default function Today() {
             })}
           </ul>
         ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-            <div className="material-icons text-gray-400 text-4xl mb-4">
+          <div className="text-center py-12 bg-green-50 rounded-lg border-2 border-dashed border-green-300">
+            <div className="material-icons text-green-400 text-4xl mb-4">
               event_busy
             </div>
-            <p className="text-gray-500 text-lg mb-2">No tasks scheduled</p>
-            <p className="text-gray-400 text-sm">
+            <p className="text-green-700 text-lg mb-2">No tasks scheduled</p>
+            <p className="text-green-500 text-sm">
               {selectedCategory !== "All"
                 ? `No tasks found for this category today.`
                 : `No tasks scheduled for today.`}

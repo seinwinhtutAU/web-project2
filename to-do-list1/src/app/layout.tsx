@@ -124,10 +124,12 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-green-50`}
       >
-        <MenuWrapper />
-        <TaskProviderWrapper>{children}</TaskProviderWrapper>
+        <TaskProviderWrapper>
+          <MenuWrapper />
+          {children}
+        </TaskProviderWrapper>
       </body>
     </html>
   );

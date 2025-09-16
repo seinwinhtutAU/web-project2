@@ -54,16 +54,15 @@ export default function TaskMore({
   };
 
   return (
-    // Removed bg-gray-900 bg-opacity-50 class from this div
-    <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 shadow-xl max-w-md w-full relative">
-        <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
-          <h2 className="text-xl font-bold text-gray-800">
+    <div className="fixed inset-0 flex items-center justify-center p-4 z-50 bg-green-50/20">
+      <div className="bg-white rounded-lg p-6 shadow-xl max-w-md w-full relative border border-green-300">
+        <div className="flex justify-between items-center mb-4 border-b border-green-200 pb-2">
+          <h2 className="text-xl font-bold text-green-800">
             Tasks ({tasks.length})
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            className="text-green-500 hover:text-green-800 p-1 rounded-full hover:bg-green-100 transition-colors"
           >
             <svg
               className="w-6 h-6"
@@ -119,7 +118,7 @@ export default function TaskMore({
                     {task.status !== "completed" && (
                       <button
                         onClick={(e) => handleCompleteTask(task._id, e)}
-                        className="text-white bg-green-500 hover:bg-green-600 rounded-full w-6 h-6 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-200"
+                        className="bg-green-500 hover:bg-green-600 rounded-full w-6 h-6 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-200"
                         title="Mark as completed"
                       >
                         <svg
@@ -139,7 +138,7 @@ export default function TaskMore({
                     )}
                     <button
                       onClick={(e) => handleDeleteTask(task._id, e)}
-                      className="text-white bg-red-500 hover:bg-red-600 rounded-full w-6 h-6 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-200"
+                      className="bg-red-500 hover:bg-red-600 rounded-full w-6 h-6 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-200"
                       title="Delete task"
                     >
                       <svg
@@ -161,16 +160,16 @@ export default function TaskMore({
               );
             })
           ) : (
-            <p className="text-gray-500 text-center">
+            <p className="text-green-700 text-center">
               No tasks found for this slot.
             </p>
           )}
         </div>
 
         {tasks.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-green-200">
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-green-700">
                 {tasks.filter((t) => t.status === "completed").length} of{" "}
                 {tasks.length} tasks completed
               </div>

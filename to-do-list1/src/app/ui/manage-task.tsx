@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import ManageCategories from "./manage-categories";
-import { Task, Category } from "../lib/data";
+import { Task } from "../lib/data";
 import { useTasks } from "../task-provider";
 import { addTask, updateTask, deleteTask } from "../lib/data";
-import { useUser } from "@/app/user-provider"; // Import user context
+import { useUser } from "@/app/user-provider";
 
 export default function ManageTask({
   onClose,
@@ -19,7 +19,7 @@ export default function ManageTask({
   onTaskSaved?: () => void;
 }) {
   const { tasks, setTasks, categories } = useTasks();
-  const { currentUser } = useUser(); // Get logged-in user
+  const { currentUser } = useUser();
 
   const [mounted, setMounted] = useState(false);
   const [task, setTask] = useState<Task | null>(null);
@@ -51,7 +51,7 @@ export default function ManageTask({
         note: "",
         category: categories[0]?._id || "default",
         status: "pending",
-        userId: currentUser._id, // Assign current user automatically
+        userId: currentUser._id,
       } as Task);
     }
   }, [taskId, tasks, categories, initialDate, mounted, currentUser]);
@@ -104,7 +104,7 @@ export default function ManageTask({
         setTasks(tasks.map((t) => (t._id === task._id ? updatedTask : t)));
       } else {
         const { _id, ...newTaskData } = task;
-        const createdTask = await addTask(newTaskData); // userId already assigned
+        const createdTask = await addTask(newTaskData);
         setTasks([...tasks, createdTask]);
       }
 
@@ -159,35 +159,32 @@ export default function ManageTask({
 
   return (
     <div className="p-6 h-full flex flex-col bg-white rounded-lg shadow-xl">
-      {/* Top loading bar */}
       {isLoading && (
-        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-center p-2 bg-blue-100 text-blue-800 rounded-b-lg shadow">
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-2"></div>
+        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-center p-2 bg-green-100 text-green-800 rounded-b-lg shadow">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-green-500 mr-2"></div>
           <p className="font-medium">Processing...</p>
         </div>
       )}
 
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-green-900">
           {taskId ? "Edit Task" : "New Task"}
         </h1>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-800 transition-colors"
+          className="text-green-500 hover:text-green-700 transition-colors"
           disabled={isLoading}
         >
           <span className="material-icons text-3xl">close</span>
         </button>
       </div>
 
-      {/* Error message */}
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg border border-red-200">
           <p className="text-sm">{error}</p>
         </div>
       )}
 
-      {/* Main Task Form */}
       <div className="space-y-4 flex-grow overflow-y-auto">
         <input
           type="text"
@@ -199,21 +196,17 @@ export default function ManageTask({
           disabled={isLoading}
         />
 
-        {/* Date and Time Pickers */}
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <span className="material-icons text-blue-500">schedule</span>
+            <span className="material-icons text-green-500">schedule</span>
             <div className="flex-1">
-              <label
-                htmlFor="startDate"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-green-800 mb-1">
                 Start Time
               </label>
               <input
                 type="datetime-local"
                 name="startDate"
-                className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-2 border border-green-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 value={task ? formatToLocalDatetime(task.startDate) : ""}
                 onChange={handleChange}
                 disabled={isLoading}
@@ -221,18 +214,15 @@ export default function ManageTask({
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <span className="material-icons text-red-500">event</span>
+            <span className="material-icons text-green-500">event</span>
             <div className="flex-1">
-              <label
-                htmlFor="dueDate"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-green-800 mb-1">
                 Due Time
               </label>
               <input
                 type="datetime-local"
                 name="dueDate"
-                className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-2 border border-green-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 value={task ? formatToLocalDatetime(task.dueDate) : ""}
                 onChange={handleChange}
                 disabled={isLoading}
@@ -242,11 +232,11 @@ export default function ManageTask({
         </div>
 
         {/* Categories */}
-        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-base font-semibold text-gray-800">Category</h3>
+            <h3 className="text-base font-semibold text-green-800">Category</h3>
             <button
-              className="text-gray-500 hover:text-gray-800 transition-colors"
+              className="text-green-500 hover:text-green-700 transition-colors"
               onClick={handleCategoriesSetting}
               disabled={isLoading}
             >
@@ -255,12 +245,12 @@ export default function ManageTask({
           </div>
           <select
             name="category"
-            className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-2 border border-green-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             value={task?.category || ""}
             onChange={handleChange}
             disabled={isLoading}
           >
-            {categories.map((cat: Category) => (
+            {categories.map((cat) => (
               <option key={cat._id} value={cat._id}>
                 {cat.name}
               </option>
@@ -269,13 +259,13 @@ export default function ManageTask({
         </div>
 
         {/* Note */}
-        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 className="text-base font-semibold text-gray-800 mb-2">Note</h3>
+        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+          <h3 className="text-base font-semibold text-green-800 mb-2">Note</h3>
           <textarea
             name="note"
             rows={4}
             placeholder="Add a note..."
-            className="w-full p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full p-2 border border-green-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             value={task?.note || ""}
             onChange={handleChange}
             disabled={isLoading}
@@ -283,7 +273,7 @@ export default function ManageTask({
         </div>
 
         {/* Status Toggle */}
-        <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg border border-green-200">
           <label className="flex items-center cursor-pointer">
             <div className="relative">
               <input
@@ -307,7 +297,7 @@ export default function ManageTask({
               ></div>
             </div>
           </label>
-          <span className="font-medium text-gray-700 text-base">
+          <span className="font-medium text-green-700 text-base">
             {task?.status === "completed" ? "Completed" : "Pending"}
           </span>
         </div>
@@ -328,7 +318,7 @@ export default function ManageTask({
         <button
           className={`flex-1 flex items-center justify-center space-x-2 font-semibold py-2 px-4 rounded-md shadow-md transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-sm ${
             taskId
-              ? "bg-blue-500 text-white hover:bg-blue-600 ml-4"
+              ? "bg-green-600 text-white hover:bg-green-700 ml-4"
               : "bg-green-500 text-white hover:bg-green-600 ml-auto"
           }`}
           onClick={handleSaveTask}

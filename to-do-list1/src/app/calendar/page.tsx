@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTasks } from "../task-provider";
-import { useUser } from "../user-provider"; // Add user context
+import { useUser } from "../user-provider";
 import TaskMore from "../ui/calendar/tasks-more";
 import DayView from "../ui/calendar/day-view";
 import WeekView from "../ui/calendar/week-view";
@@ -19,7 +19,7 @@ interface ModalState {
 
 export default function CalendarPage() {
   const { tasks, setTasks } = useTasks();
-  const { currentUser } = useUser(); // Get logged-in user
+  const { currentUser } = useUser();
   const [view, setView] = useState("month");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
@@ -34,7 +34,6 @@ export default function CalendarPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Function to update overdue tasks on the client
   const updateOverdueTasks = (tasks: Task[]): Task[] => {
     const now = new Date();
     return tasks.map((task) => {
@@ -47,13 +46,11 @@ export default function CalendarPage() {
     });
   };
 
-  // Function to refresh tasks from API
   const refreshTasks = async () => {
     if (!currentUser) return;
     setIsLoading(true);
     try {
       const updatedTasks = await fetchTasks();
-      // Filter tasks for the current user
       const userTasks = updatedTasks.filter(
         (task: Task) => task.userId === currentUser._id
       );
@@ -66,22 +63,20 @@ export default function CalendarPage() {
     }
   };
 
-  // Periodically check for overdue tasks
   useEffect(() => {
     const interval = setInterval(() => {
       setTasks((prev) => updateOverdueTasks(prev));
-    }, 60000); // every 1 minute
+    }, 60000);
     return () => clearInterval(interval);
   }, [setTasks]);
 
-  // Load tasks on initial render
   useEffect(() => {
     refreshTasks();
   }, [currentUser]);
 
   if (!currentUser) {
     return (
-      <div className="text-center py-20 text-gray-500">
+      <div className="text-center py-20 text-green-700 font-medium">
         Please log in to view your calendar.
       </div>
     );
@@ -102,7 +97,6 @@ export default function CalendarPage() {
     "December",
   ];
 
-  // Normalize task dates
   const normalizedTasks = tasks.map((task) => ({
     ...task,
     startDate:
@@ -113,7 +107,6 @@ export default function CalendarPage() {
       task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate),
   }));
 
-  // Drag & Drop Handlers
   const handleDragStart = (e: React.DragEvent, taskId: string) => {
     setDraggedTaskId(taskId);
     e.dataTransfer.effectAllowed = "move";
@@ -129,7 +122,6 @@ export default function CalendarPage() {
     e.preventDefault();
     const taskId = e.dataTransfer.getData("taskId");
     if (!taskId) return;
-
     const taskToUpdate = normalizedTasks.find((t) => t._id === taskId);
     if (!taskToUpdate) return;
 
@@ -164,7 +156,6 @@ export default function CalendarPage() {
     e.preventDefault();
     const taskId = e.dataTransfer.getData("taskId");
     if (!taskId) return;
-
     const taskToUpdate = normalizedTasks.find((t) => t._id === taskId);
     if (!taskToUpdate) return;
 
@@ -193,7 +184,6 @@ export default function CalendarPage() {
 
   const handleDropDaily = handleDropWeek;
 
-  // Modal Openers
   const openAddModal = (day: number) =>
     setModal({
       visible: true,
@@ -219,7 +209,6 @@ export default function CalendarPage() {
     });
 
   const openAddModalDaily = openAddModalWeek;
-
   const openEditModal = (taskId: string) => {
     setModal({ visible: true, taskId, initialDate: null });
     setShowMoreModal({ visible: false, tasks: [] });
@@ -235,24 +224,15 @@ export default function CalendarPage() {
   const closeMoreTasksModal = () =>
     setShowMoreModal({ visible: false, tasks: [] });
 
-  // Navigation
   const goToPrevious = () => {
     if (view === "month")
       setCurrentDate(
         (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
       );
     else if (view === "week")
-      setCurrentDate((prev) => {
-        const d = new Date(prev);
-        d.setDate(d.getDate() - 7);
-        return d;
-      });
+      setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() - 7)));
     else if (view === "day")
-      setCurrentDate((prev) => {
-        const d = new Date(prev);
-        d.setDate(d.getDate() - 1);
-        return d;
-      });
+      setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() - 1)));
   };
 
   const goToNext = () => {
@@ -261,17 +241,9 @@ export default function CalendarPage() {
         (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
       );
     else if (view === "week")
-      setCurrentDate((prev) => {
-        const d = new Date(prev);
-        d.setDate(d.getDate() + 7);
-        return d;
-      });
+      setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() + 7)));
     else if (view === "day")
-      setCurrentDate((prev) => {
-        const d = new Date(prev);
-        d.setDate(d.getDate() + 1);
-        return d;
-      });
+      setCurrentDate((prev) => new Date(prev.setDate(prev.getDate() + 1)));
   };
 
   const monthName = months[currentDate.getMonth()];
@@ -289,11 +261,11 @@ export default function CalendarPage() {
   })}, ${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
 
   return (
-    <div className="min-h-screen p-4 font-sans flex items-center justify-center">
-      <div className="bg-white p-6 max-w-6xl w-full">
+    <div className="min-h-screen p-4 font-sans flex items-center justify-center bg-green-50">
+      <div className="bg-green-50 p-6 max-w-6xl w-full">
         {/* Loading */}
         {isLoading && (
-          <div className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg">
+          <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
             Loading tasks...
           </div>
         )}
@@ -303,11 +275,11 @@ export default function CalendarPage() {
           <div className="flex items-center space-x-2">
             <button
               onClick={goToPrevious}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+              className="p-2 rounded-full bg-green-200 hover:bg-green-300 text-green-800 transition-colors"
             >
               {"<"}
             </button>
-            <span className="text-lg font-bold text-gray-800">
+            <span className="text-lg font-bold text-green-900">
               {view === "month"
                 ? `${monthName} ${currentDate.getFullYear()}`
                 : view === "week"
@@ -316,7 +288,7 @@ export default function CalendarPage() {
             </span>
             <button
               onClick={goToNext}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors"
+              className="p-2 rounded-full bg-green-200 hover:bg-green-300 text-green-800 transition-colors"
             >
               {">"}
             </button>
@@ -325,7 +297,7 @@ export default function CalendarPage() {
           <div className="flex items-center space-x-4">
             <button
               onClick={refreshTasks}
-              className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+              className="p-2 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors"
               title="Refresh tasks"
             >
               ↻
@@ -333,7 +305,7 @@ export default function CalendarPage() {
             <select
               value={view}
               onChange={(e) => setView(e.target.value)}
-              className="p-2 rounded-lg bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 rounded-lg bg-white border border-green-300 text-green-800 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               <option value="month">Month</option>
               <option value="week">Week</option>
@@ -387,7 +359,7 @@ export default function CalendarPage() {
       {/* Manage Task Modal */}
       {modal.visible && (
         <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full relative">
+          <div className="rounded-lg p-6 max-w-md w-full">
             <ManageTask
               onClose={closeModal}
               taskId={modal.taskId}

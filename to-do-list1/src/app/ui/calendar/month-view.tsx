@@ -130,7 +130,7 @@ export default function MonthView({
         cells.push(
           <td
             key={`empty-${cellIndex}`}
-            className="p-2 align-top bg-gray-50 border border-gray-200"
+            className="p-2 align-top bg-green-50 border border-green-200"
           >
             <div className="h-32"></div>
           </td>
@@ -143,14 +143,14 @@ export default function MonthView({
         cells.push(
           <td
             key={day}
-            className="relative p-3 align-top bg-white border border-gray-200 cursor-pointer transition-all duration-200 hover:bg-gray-100"
+            className="relative p-3 align-top bg-white border border-green-200 cursor-pointer transition-all duration-200 hover:bg-green-50"
             onDragOver={onDragOver}
             onDrop={(e) => handleDropWithAPI(e, day)}
             onClick={() => onDayClick(day)}
           >
             <span
               className={`text-sm font-semibold p-2 rounded-full h-8 w-8 flex items-center justify-center transition-colors duration-200
-                ${isToday(day) ? "bg-blue-600 text-white" : "text-gray-800"}`}
+                ${isToday(day) ? "bg-green-600 text-white" : "text-green-800"}`}
             >
               {day}
             </span>
@@ -217,7 +217,7 @@ export default function MonthView({
               ))}
               {tasksForDay.length > 2 && (
                 <button
-                  className="absolute bottom-2 right-3 text-gray-500 hover:text-gray-800 text-sm w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 transition-colors duration-200"
+                  className="absolute bottom-2 right-3 text-green-700 hover:text-green-900 text-sm w-6 h-6 flex items-center justify-center rounded-full bg-green-200 hover:bg-green-300 transition-colors duration-200"
                   onClick={(e) => {
                     e.stopPropagation();
                     openMoreTasksModal(tasksForDay);
@@ -242,13 +242,13 @@ export default function MonthView({
 
   return (
     <div className="p-4 overflow-x-auto">
-      <table className="w-full table-fixed border-collapse border border-gray-300">
+      <table className="w-full table-fixed border-collapse border border-green-300">
         <thead>
-          <tr className="bg-gray-100">
+          <tr className="bg-green-100">
             {daysOfWeek.map((day) => (
               <th
                 key={`header-${day}`}
-                className="py-2 text-center text-gray-500 text-sm font-medium border border-gray-200"
+                className="py-2 text-center text-green-700 text-sm font-medium border border-green-200"
               >
                 {day}
               </th>
