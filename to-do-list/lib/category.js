@@ -28,6 +28,26 @@ export async function updateCategory(id, updatedData) {
   });
 }
 
+// export async function deleteCategory(id) {
+//   await apiClient(`/category/${id}`, { method: "DELETE" });
+// }
+
 export async function deleteCategory(id) {
-  await apiClient(`/category/${id}`, { method: "DELETE" });
+  try {
+    const response = await fetch(`/todolist/api/category/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to delete category");
+    }
+  } catch (error) {
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      throw new Error(
+        "Network error: Failed to connect to the server. Please check your network connection."
+      );
+    }
+    throw error;
+  }
 }

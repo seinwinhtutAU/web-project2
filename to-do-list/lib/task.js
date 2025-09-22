@@ -30,7 +30,7 @@ export async function updateTask(id, updatedData) {
 
 export async function deleteTask(id) {
   try {
-    const response = await fetch(`/api/task/${id}`, {
+    const response = await fetch(`/todolist/api/task/${id}`, {
       method: "DELETE",
     });
 
