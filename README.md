@@ -1,7 +1,7 @@
 # CalenDo
 
 ## Team Members
-- Sein Win Htut 6611040
+Sein Win Htut 6611040
 
 ## Project Description
 **CalenDo** is a to-do list app integrated with a calendar.
